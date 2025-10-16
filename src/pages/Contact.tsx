@@ -6,8 +6,8 @@ import { contactVariants } from "../utils/contact.cva";
 import {
   contactFormVariants,
   contactInputVariants,
-  contactButtonVariants,
 } from "../utils/contactForm.cva";
+import { Button } from "../components/Button";
 import { useState } from "react";
 
 export interface ContactProps {
@@ -29,7 +29,6 @@ export const Contact = ({ variant = "stellar" }: ContactProps) => {
     setTimeout(() => setSubmitted(false), 3000);
   };
 
-  // Variant accent gradient for success overlay
   const accentGradient =
     variant === "stellar"
       ? "from-indigo-500/50 to-purple-500/50"
@@ -47,12 +46,12 @@ export const Contact = ({ variant = "stellar" }: ContactProps) => {
   return (
     <section
       className={cn(
-        "relative flex flex-col items-center justify-center overflow-hidden py-20",
+        "relative flex flex-col items-center justify-center overflow-hidden py-20 mt-16", // ✅ Added top margin
         contactVariants({ variant })
       )}
     >
-      {/* Background Blobs */}
-      <div className="absolute inset-0 overflow-hidden">
+      {/* 🌌 Background Blobs */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
         {variant === "stellar" && (
           <div className="absolute w-[700px] h-[700px] bg-gradient-to-br from-indigo-600/40 to-purple-500/40 rounded-full blur-3xl top-[-10%] left-[-10%]" />
         )}
@@ -64,19 +63,20 @@ export const Contact = ({ variant = "stellar" }: ContactProps) => {
         )}
       </div>
 
-      {/* Content */}
+      {/* 💬 Content */}
       <motion.div
         initial={{ opacity: 0, y: 60 }}
         whileInView={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
         viewport={{ once: true }}
-        className={cn(contactFormVariants({ variant }), "relative")}
+        className={cn(contactFormVariants({ variant }), "relative z-10")}
       >
         <h2 className="text-4xl font-bold text-center mb-6">
           {variant === "stellar" && "Reach for the Stars ✨"}
           {variant === "bloom" && "Let's Grow Together 🌸"}
           {variant === "minimalist" && "We’d Love to Hear From You 💬"}
         </h2>
+
         <p className="text-center mb-10 text-base opacity-80">
           Have a question, idea, or partnership in mind? Drop us a message
           below.
@@ -110,17 +110,14 @@ export const Contact = ({ variant = "stellar" }: ContactProps) => {
             onChange={handleChange}
             className={cn(contactInputVariants({ variant }))}
           />
-          <motion.button
-            type="submit"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.97 }}
-            className={cn(contactButtonVariants({ variant }))}
-          >
-            Send Message
-          </motion.button>
+
+          {/* ✅ Integrated your Button component */}
+          <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}>
+            <Button variant={variant}>Send Message</Button>
+          </motion.div>
         </form>
 
-        {/* ✨ Glassmorphic Floating Success Overlay */}
+        {/* 🎉 Floating Success Overlay */}
         <AnimatePresence>
           {submitted && (
             <motion.div

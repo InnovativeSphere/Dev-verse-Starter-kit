@@ -36,7 +36,7 @@ export const Navbar: React.FC<NavbarProps> = ({ variant = "stellar" }) => {
   const location = useLocation();
 
   const theme = themes[variant];
-  const { accent, border, foreground, secondary } = theme.colors;
+  const { accent, border, secondary } = theme.colors;
 
   const navLinks = [
     { to: "/", label: "Home" },
@@ -47,7 +47,7 @@ export const Navbar: React.FC<NavbarProps> = ({ variant = "stellar" }) => {
     { to: "/login", label: "Login" },
   ];
 
-  // Disable body scroll when menu is open
+  // manage scroll lock
   useEffect(() => {
     const prev = document.body.style.overflow;
     document.body.style.overflow = isOpen ? "hidden" : prev || "auto";
@@ -56,7 +56,7 @@ export const Navbar: React.FC<NavbarProps> = ({ variant = "stellar" }) => {
     };
   }, [isOpen]);
 
-  // Focus trap for accessibility
+  // accessibility trap
   useEffect(() => {
     if (!isOpen || !panelRef.current) return;
     const panel = panelRef.current;
@@ -67,10 +67,7 @@ export const Navbar: React.FC<NavbarProps> = ({ variant = "stellar" }) => {
     const last = focusable[focusable.length - 1];
 
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        setIsOpen(false);
-        return;
-      }
+      if (e.key === "Escape") return setIsOpen(false);
       if (e.key === "Tab") {
         if (!first || !last) return;
         if (e.shiftKey && document.activeElement === first) {
@@ -82,7 +79,6 @@ export const Navbar: React.FC<NavbarProps> = ({ variant = "stellar" }) => {
         }
       }
     };
-
     document.addEventListener("keydown", onKey);
     first?.focus();
     return () => document.removeEventListener("keydown", onKey);
@@ -97,29 +93,33 @@ export const Navbar: React.FC<NavbarProps> = ({ variant = "stellar" }) => {
     { size: 160, top: "65%", left: "20%", delay: 0.7 },
   ];
 
+  // Dynamic contrast — ensures logo + menu icon visible on all variants
+  const isDarkVariant = variant === "stellar";
+  const baseTextColor = isDarkVariant ? "#F9FBFC" : "#111";
+  const iconColor =
+    variant === "minimalist"
+      ? "#111" // dark icon for bright minimalist
+      : isDarkVariant
+      ? "#F9FBFC" // bright icon for dark background
+      : accent; // bloom uses accent color
+  const overlayBg = isDarkVariant
+    ? "rgba(0,0,0,0.35)"
+    : "rgba(255,255,255,0.25)";
+  const hoverHighlight = isDarkVariant ? "#66FCF1" : accent;
+
   return (
     <motion.nav
       role="navigation"
       aria-label="Main navigation"
       className={cn(
-        "absolute top-0 left-0 w-full z-20 overflow-visible transition-all duration-700",
+        "absolute top-0 left-0 w-full z-20 overflow-visible transition-all duration-700 mb-4 sm:mb-8 md:mb-12",
         navbarVariants({ variant })
       )}
       initial={{ opacity: 0, y: -20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, ease: "easeOut" }}
     >
-      {/* subtle hover glow */}
-      <motion.div
-        className="absolute inset-0 pointer-events-none transition-all duration-500"
-        style={{ backdropFilter: "blur(6px)", WebkitBackdropFilter: "blur(6px)" }}
-        whileHover={{
-          backgroundColor: "rgba(255,255,255,0.05)",
-          filter: "brightness(1.1)",
-        }}
-      />
-
-      {/* background floating orbs */}
+      {/* floating accent blobs */}
       {panelOrbs.map((o, i) => (
         <motion.div
           key={`header-orb-${i}`}
@@ -130,7 +130,7 @@ export const Navbar: React.FC<NavbarProps> = ({ variant = "stellar" }) => {
             top: o.top,
             left: o.left,
             background: accent,
-            opacity: 0.14,
+            opacity: isDarkVariant ? 0.15 : 0.1,
           }}
           animate={{
             y: [0, -10 + i * -4, 0],
@@ -146,32 +146,40 @@ export const Navbar: React.FC<NavbarProps> = ({ variant = "stellar" }) => {
         />
       ))}
 
-      {/* Header content */}
+      {/* Header */}
       <div className="relative z-30 max-w-7xl mx-auto flex items-center justify-between px-6 py-5">
-        {/* Brand */}
         <motion.div
           className="flex items-center gap-3 cursor-pointer select-none"
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.97 }}
         >
-          <FaStar className="text-xl" style={{ color: accent }} />
+          <FaStar
+            className="text-xl drop-shadow-md"
+            style={{
+              color: iconColor,
+              filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.25))",
+            }}
+          />
           <motion.h1
             className="text-lg font-semibold tracking-tight"
-            style={{ color: foreground }}
+            style={{
+              color: baseTextColor,
+              textShadow: "0 1px 3px rgba(0,0,0,0.3)",
+            }}
           >
             NovaUI
           </motion.h1>
         </motion.div>
 
-        {/* Hamburger */}
+        {/* hamburger */}
         <motion.button
           aria-label={isOpen ? "Close menu" : "Open menu"}
           aria-expanded={isOpen}
           onClick={() => setIsOpen((s) => !s)}
-          className="p-2 rounded-md flex items-center justify-center"
+          className="p-2 rounded-md flex items-center justify-center ml-4"
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.92 }}
-          style={{ color: foreground }}
+          style={{ color: iconColor }}
         >
           <svg
             width={HAMBURGER_SIZE.width}
@@ -180,56 +188,38 @@ export const Navbar: React.FC<NavbarProps> = ({ variant = "stellar" }) => {
             xmlns="http://www.w3.org/2000/svg"
             aria-hidden
           >
-            <motion.rect
-              width="28"
-              height="2"
-              rx="1"
-              x={0}
-              y={2}
-              style={{ fill: foreground }}
-              variants={lineMotion}
-              animate={isOpen ? "openTop" : "closedTop"}
-              transform-origin="14 1"
-            />
-            <motion.rect
-              width="28"
-              height="2"
-              rx="1"
-              x={0}
-              y={10}
-              style={{ fill: foreground }}
-              variants={lineMotion}
-              animate={isOpen ? "openMiddle" : "closedMiddle"}
-            />
-            <motion.rect
-              width="28"
-              height="2"
-              rx="1"
-              x={0}
-              y={18}
-              style={{ fill: foreground }}
-              variants={lineMotion}
-              animate={isOpen ? "openBottom" : "closedBottom"}
-              transform-origin="14 19"
-            />
+            {["Top", "Middle", "Bottom"].map((pos, i) => (
+              <motion.rect
+                key={pos}
+                width="28"
+                height="2"
+                rx="1"
+                x={0}
+                y={i * 8 + 2}
+                style={{ fill: iconColor }}
+                variants={lineMotion}
+                animate={isOpen ? `open${pos}` : `closed${pos}`}
+                transform-origin={i === 0 ? "14 1" : i === 2 ? "14 19" : "14 10"}
+              />
+            ))}
           </svg>
         </motion.button>
       </div>
 
-      {/* Mobile panel */}
+      {/* Slide-in menu (unchanged) */}
       <AnimatePresence>
         {isOpen && (
           <>
             <motion.div
               className="fixed inset-0 z-40"
               initial={{ opacity: 0 }}
-              animate={{ opacity: 0.28 }}
+              animate={{ opacity: 0.3 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
+              transition={{ duration: 0.25 }}
               style={{
                 backdropFilter: "blur(6px)",
                 WebkitBackdropFilter: "blur(6px)",
-                background: "rgba(0,0,0,0.25)",
+                background: overlayBg,
               }}
               onClick={() => setIsOpen(false)}
               aria-hidden
@@ -245,53 +235,30 @@ export const Navbar: React.FC<NavbarProps> = ({ variant = "stellar" }) => {
               transition={{ type: "spring", stiffness: 120, damping: 18 }}
               style={{
                 background: secondary,
-                color: foreground,
+                color: baseTextColor,
                 borderRight: `1px solid ${border}`,
-                backdropFilter: "blur(10px)",
-                WebkitBackdropFilter: "blur(10px)",
-                boxShadow: "0 10px 30px rgba(0,0,0,0.15)",
+                backdropFilter: "blur(12px)",
+                WebkitBackdropFilter: "blur(12px)",
               }}
             >
-              {/* Panel orbs */}
-              <div className="absolute inset-0 pointer-events-none overflow-hidden z-10">
-                {panelOrbs.map((o, idx) => (
-                  <motion.div
-                    key={`panel-orb-${idx}`}
-                    className="absolute rounded-full blur-2xl"
-                    style={{
-                      width: o.size,
-                      height: o.size,
-                      top: o.top,
-                      left: o.left,
-                      background: accent,
-                      opacity: 0.14,
-                    }}
-                    initial={{ y: 0, x: 0, opacity: 0.08 }}
-                    animate={{
-                      y: [0, -18 + idx * -6, 0],
-                      x: [0, 8 - idx * 2, 0],
-                      opacity: [0.06, 0.18, 0.06],
-                    }}
-                    transition={{
-                      duration: 8 + idx * 1.5,
-                      repeat: Infinity,
-                      ease: "easeInOut",
-                      delay: idx * 0.6,
-                    }}
-                  />
-                ))}
-              </div>
-
-              {/* Navigation links */}
-              <nav className="relative z-20 mt-6 flex flex-col gap-5" aria-label="Main menu">
-                {navLinks.map((link) => {
+              <nav className="relative z-20 mt-6 flex flex-col gap-5">
+                {navLinks.map((link, i) => {
                   const active = isActive(link.to);
                   return (
-                    <div key={link.to} className="relative">
+                    <motion.div
+                      key={link.to}
+                      className="relative"
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: i * 0.1 }}
+                    >
                       <Link
                         to={link.to}
-                        className="text-lg font-medium block py-1"
-                        style={{ color: foreground }}
+                        className="text-lg font-medium block py-1 transition-transform duration-300"
+                        style={{
+                          color: baseTextColor,
+                          opacity: active ? 1 : 0.88,
+                        }}
                         onClick={() => setIsOpen(false)}
                       >
                         {link.label}
@@ -299,19 +266,19 @@ export const Navbar: React.FC<NavbarProps> = ({ variant = "stellar" }) => {
                       <motion.span
                         className="absolute left-0 bottom-0 h-[3px] rounded origin-left"
                         style={{
-                          width: active ? "100%" : "0%",
-                          background: accent,
-                          opacity: active ? 0.95 : 0.6,
+                          background: hoverHighlight,
+                          opacity: active ? 1 : 0.65,
                         }}
-                        animate={{ width: active ? "100%" : "0%" }}
-                        transition={{ duration: 0.28, ease: "easeInOut" }}
+                        animate={{
+                          width: active ? "100%" : "0%",
+                        }}
+                        transition={{ duration: 0.3, ease: "easeInOut" }}
                       />
-                    </div>
+                    </motion.div>
                   );
                 })}
               </nav>
 
-              {/* Get Started button */}
               <div className="mt-auto relative z-20">
                 <Button variant={variant} size="sm">
                   <Link to="/register">Get Started</Link>

@@ -3,9 +3,14 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { cn } from "../utils/cn";
-import { registerVariants } from "../utils/register.cva";
+import { registerVariants, getRegisterThemeVars } from "../utils/register.cva";
 import { Button } from "../components/Button";
-import { fadeUp, hoverScale, tapScale, staggerChildren } from "../utils/animations.cva";
+import {
+  fadeUp,
+  hoverScale,
+  tapScale,
+  staggerChildren,
+} from "../utils/animations.cva";
 import { FiMail, FiLock, FiUser, FiMapPin } from "react-icons/fi";
 import { themes } from "../Styles/themes";
 
@@ -14,32 +19,52 @@ interface RegisterProps {
 }
 
 export const Register: React.FC<RegisterProps> = ({ variant = "stellar" }) => {
-  // Pull theme colors
-  const ring = themes[variant].colors.ring;
-  const foreground = themes[variant].colors.foreground;
+  const theme = themes[variant];
+
+  // colors from theme.ts
+  const foreground = theme.colors.foreground;
+  const primary = theme.colors.primary;
+  const border = theme.colors.border;
+  const background = theme.colors.background;
+
+  // input background per theme
+  const inputBg =
+    variant === "minimalist"
+      ? "bg-white text-[#111] placeholder:text-gray-500"
+      : "bg-white/10 text-white placeholder:text-white/70";
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-900 py-16 px-4">
+    <div
+      className="min-h-screen flex items-center justify-center py-24 px-4"
+      style={{ backgroundColor: background }}
+    >
       <motion.div
         className={cn(registerVariants({ variant }))}
+        style={getRegisterThemeVars(variant)}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true }}
         variants={staggerChildren(0.15)}
       >
+        {/* Title */}
         <motion.h2
           className="text-3xl md:text-4xl font-bold text-center mb-6"
+          style={{ color: foreground }}
           variants={fadeUp}
         >
           Create Your Account
         </motion.h2>
+
+        {/* Subtitle */}
         <motion.p
-          className="text-center mb-8 opacity-70"
+          className="text-center mb-8 opacity-75"
+          style={{ color: foreground }}
           variants={fadeUp}
         >
           Join our platform and start building amazing experiences
         </motion.p>
 
+        {/* Form */}
         <motion.form className="flex flex-col gap-4" variants={fadeUp}>
           {/* Full Name */}
           <div className="relative">
@@ -48,9 +73,15 @@ export const Register: React.FC<RegisterProps> = ({ variant = "stellar" }) => {
               type="text"
               placeholder="Full Name"
               className={cn(
-                "w-full pl-10 pr-4 py-3 rounded-md border bg-white/10 placeholder:text-gray-400 focus:outline-none transition",
-                `border-[${ring}] focus:ring-2 focus:ring-[${ring}] text-[${foreground}]`
+                `w-full pl-10 pr-4 py-3 rounded-md border focus:outline-none transition ${foreground}`
               )}
+              style={{
+                borderColor: border,
+                color: foreground,
+                boxShadow: `0 0 0 2px transparent`,
+              }}
+              onFocus={(e) => (e.currentTarget.style.boxShadow = `0 0 0 2px ${primary}`)}
+              onBlur={(e) => (e.currentTarget.style.boxShadow = `0 0 0 2px transparent`)}
             />
           </div>
 
@@ -61,9 +92,14 @@ export const Register: React.FC<RegisterProps> = ({ variant = "stellar" }) => {
               type="email"
               placeholder="Email"
               className={cn(
-                "w-full pl-10 pr-4 py-3 rounded-md border bg-white/10 placeholder:text-gray-400 focus:outline-none transition",
-                `border-[${ring}] focus:ring-2 focus:ring-[${ring}] text-[${foreground}]`
+                `w-full pl-10 pr-4 py-3 rounded-md border focus:outline-none transition ${foreground}`
               )}
+              style={{
+                borderColor: border,
+                color: foreground,
+              }}
+              onFocus={(e) => (e.currentTarget.style.boxShadow = `0 0 0 2px ${primary}`)}
+              onBlur={(e) => (e.currentTarget.style.boxShadow = `0 0 0 2px transparent`)}
             />
           </div>
 
@@ -74,9 +110,14 @@ export const Register: React.FC<RegisterProps> = ({ variant = "stellar" }) => {
               type="text"
               placeholder="Address"
               className={cn(
-                "w-full pl-10 pr-4 py-3 rounded-md border bg-white/10 placeholder:text-gray-400 focus:outline-none transition",
-                `border-[${ring}] focus:ring-2 focus:ring-[${ring}] text-[${foreground}]`
+                `w-full pl-10 pr-4 py-3 rounded-md border focus:outline-none transition ${foreground}`
               )}
+              style={{
+                borderColor: border,
+                color: foreground,
+              }}
+              onFocus={(e) => (e.currentTarget.style.boxShadow = `0 0 0 2px ${primary}`)}
+              onBlur={(e) => (e.currentTarget.style.boxShadow = `0 0 0 2px transparent`)}
             />
           </div>
 
@@ -87,9 +128,14 @@ export const Register: React.FC<RegisterProps> = ({ variant = "stellar" }) => {
               type="password"
               placeholder="Password"
               className={cn(
-                "w-full pl-10 pr-4 py-3 rounded-md border bg-white/10 placeholder:text-gray-400 focus:outline-none transition",
-                `border-[${ring}] focus:ring-2 focus:ring-[${ring}] text-[${foreground}]`
+                `w-full pl-10 pr-4 py-3 rounded-md border focus:outline-none transition ${foreground}`
               )}
+              style={{
+                borderColor: border,
+                color: foreground,
+              }}
+              onFocus={(e) => (e.currentTarget.style.boxShadow = `0 0 0 2px ${primary}`)}
+              onBlur={(e) => (e.currentTarget.style.boxShadow = `0 0 0 2px transparent`)}
             />
           </div>
 
@@ -100,15 +146,24 @@ export const Register: React.FC<RegisterProps> = ({ variant = "stellar" }) => {
               type="password"
               placeholder="Confirm Password"
               className={cn(
-                "w-full pl-10 pr-4 py-3 rounded-md border bg-white/10 placeholder:text-gray-400 focus:outline-none transition",
-                `border-[${ring}] focus:ring-2 focus:ring-[${ring}] text-[${foreground}]`
+                `w-full pl-10 pr-4 py-3 rounded-md border focus:outline-none transition ${foreground}`
               )}
+              style={{
+                borderColor: border,
+                color: foreground,
+              }}
+              onFocus={(e) => (e.currentTarget.style.boxShadow = `0 0 0 2px ${primary}`)}
+              onBlur={(e) => (e.currentTarget.style.boxShadow = `0 0 0 2px transparent`)}
             />
           </div>
 
-          {/* Register Button */}
+          {/* Submit */}
           <motion.div whileHover={hoverScale} whileTap={tapScale}>
-            <Button variant={variant} size="md" className="w-full mt-2">
+            <Button
+              variant={variant}
+              size="md"
+              className="w-full mt-3 font-medium"
+            >
               Sign Up
             </Button>
           </motion.div>
@@ -116,13 +171,26 @@ export const Register: React.FC<RegisterProps> = ({ variant = "stellar" }) => {
 
         {/* Footer Links */}
         <motion.div
-          className="mt-6 flex justify-between text-sm text-gray-300"
+          className="mt-8 flex justify-between text-sm opacity-80"
           variants={fadeUp}
+          style={{ color: foreground }}
         >
-          <a href="/login" className={cn(`hover:text-[${ring}] transition`)}>
+          <a
+            href="/login"
+            className="transition"
+            style={{ color: foreground }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = primary)}
+            onMouseLeave={(e) => (e.currentTarget.style.color = foreground)}
+          >
             Already have an account?
           </a>
-          <a href="#" className={cn(`hover:text-[${ring}] transition`)}>
+          <a
+            href="#"
+            className="transition"
+            style={{ color: foreground }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = primary)}
+            onMouseLeave={(e) => (e.currentTarget.style.color = foreground)}
+          >
             Need Help?
           </a>
         </motion.div>

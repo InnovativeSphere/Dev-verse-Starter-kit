@@ -19,7 +19,7 @@ export const Button = ({
 }: ButtonProps) => {
   const [hovered, setHovered] = useState(false);
 
-  const emojis = ["⚡", "💎"];
+ const emojis = ["✨", "✔️", "🤔", "🙌", "💡"];
 
   return (
     <div

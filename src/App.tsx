@@ -19,12 +19,10 @@ function App() {
 
 
   return (
-    <div className="min-h-screen bg-gray-900 text-gray-100">
+    <div className="min-h-screen">
       <Router>
         {/* Navbar */}
-      <div className="pb-5">
-          <Navbar variant="stellar" />
-      </div>
+          <Navbar variant="bloom" />
 
         {/* Routes */}
         <Routes>
@@ -38,10 +36,10 @@ function App() {
                 variants={staggerChildren(0.15)}
               >
                 <motion.div variants={fadeUp} whileHover={{ scale: 1.01 }}>
-                  <Home variant="stellar" />
+                  <Home variant="bloom" />
                 </motion.div>
                 <motion.div variants={fadeUp} whileHover={{ scale: 1.01 }}>
-                  <CallToAction variant="stellar" />
+                  <CallToAction variant="bloom" />
                 </motion.div>
               </motion.div>
             }
@@ -50,7 +48,7 @@ function App() {
             path="/about"
             element={
               <motion.div variants={fadeUp} initial="hidden" whileInView="visible">
-                <About variant="stellar" />
+                <About variant="bloom" />
               </motion.div>
             }
           />
@@ -58,7 +56,7 @@ function App() {
             path="/contact"
             element={
               <motion.div variants={fadeUp} initial="hidden" whileInView="visible">
-                <Contact variant="stellar" />
+                <Contact variant="bloom" />
               </motion.div>
             }
           />
@@ -66,7 +64,7 @@ function App() {
             path="/register"
             element={
               <motion.div variants={fadeUp} initial="hidden" whileInView="visible">
-                <Register variant="stellar" />
+                <Register variant="bloom" />
               </motion.div>
             }
           />
@@ -74,7 +72,7 @@ function App() {
             path="/login"
             element={
               <motion.div variants={fadeUp} initial="hidden" whileInView="visible">
-                <Login variant="stellar" />
+                <Login variant="bloom" />
               </motion.div>
             }
           />
@@ -83,7 +81,7 @@ function App() {
             path="/services"
             element={
               <motion.div variants={fadeUp} initial="hidden" whileInView="visible">
-                <Services variant="stellar" />
+                <Services variant="bloom" />
               </motion.div>
             }
           />
@@ -91,7 +89,7 @@ function App() {
 
         {/* Footer */}
         <motion.div variants={fadeUp} initial="hidden" whileInView="visible">
-          <Footer variant="stellar" />
+          <Footer variant="bloom" />
         </motion.div>
       </Router>
     </div>

@@ -15,23 +15,27 @@ export interface AboutProps {
 
 export const About = ({ variant = "stellar" }: AboutProps) => {
   const images =
-    variant === "stellar"
-      ? [
-          "https://images.unsplash.com/photo-1522199710521-72d69614c702?auto=format&fit=crop&w=1200&q=80",
-          "https://images.unsplash.com/photo-1496307042754-b4aa456c4a2d?auto=format&fit=crop&w=1200&q=80",
-          "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1200&q=80",
-        ]
-      : variant === "bloom"
-      ? [
-          "https://images.unsplash.com/photo-1557683316-973673baf926?auto=format&fit=crop&w=1200&q=80",
-          "https://images.unsplash.com/photo-1603988363607-e1e4a66962c0?auto=format&fit=crop&w=1200&q=80",
-          "https://images.unsplash.com/photo-1620912189861-fc1a2f0cf39c?auto=format&fit=crop&w=1200&q=80",
-        ]
-      : [
-          "https://images.unsplash.com/photo-1618005198919-d3d4b5a92ead?auto=format&fit=crop&w=1200&q=80",
-          "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
-          "https://images.unsplash.com/photo-1612831662375-295c1003d3d3?auto=format&fit=crop&w=1200&q=80",
-        ];
+  variant === "stellar"
+    ? [
+        // Stellar → cosmic, futuristic, neon energy vibes
+        "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1535223289827-42f1e9919769?auto=format&fit=crop&w=1200&q=80",
+      ]
+    : variant === "bloom"
+    ? [
+        // Bloom → soft, floral, pinkish aesthetic with warm gradients
+        "https://images.unsplash.com/photo-1498837167922-ddd27525d352?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&w=1200&q=80",
+      ]
+    : [
+        // Minimalist → clean, modern, grayscale with subtle contrast
+        "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1612831455549-43e7f5eafaf3?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1615874959474-d609969a20ed?auto=format&fit=crop&w=1200&q=80",
+      ];
+
 
   const [index, setIndex] = useState(0);
 

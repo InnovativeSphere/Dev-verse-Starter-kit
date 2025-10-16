@@ -175,7 +175,7 @@ export const Home = ({ variant = "stellar" }: { variant?: "stellar" | "bloom" | 
               transition={{ duration: 0.3 }}
               className={cn(testimonialCard({ variant }))}
             >
-              <p className={cn("mb-4 text-sm opacity-90 leading-relaxed", theme.colors.foreground)}>
+              <p className={cn("mb-4 text-sm opacity-90 leading-relaxed", theme.colors.background)}>
                 “Absolutely stunning design system — fluid, modern, and a joy to work with. Every variant feels like its own personality.”
               </p>
               <h4 className={cn("font-semibold opacity-95", theme.colors.foreground)}>— Taylor R.</h4>

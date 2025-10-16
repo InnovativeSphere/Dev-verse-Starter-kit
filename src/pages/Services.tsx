@@ -3,9 +3,8 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useState, useEffect } from "react";
 import { cn } from "../utils/cn";
-import { servicesVariants } from "../utils/services.cva";
+import { servicesVariants, getServiceStyles } from "../utils/services.cva";
 import { FaLaptopCode, FaCode, FaRocket } from "react-icons/fa6";
-import { themes } from "../Styles/themes";
 
 interface ServicesProps {
   variant?: "stellar" | "bloom" | "minimalist";
@@ -19,8 +18,8 @@ interface ServiceItem {
 }
 
 export const Services = ({ variant = "stellar" }: ServicesProps) => {
-  const theme = themes[variant];
-  const accent = theme.colors.accent;
+  const { accent, border, radius, shadow, secondary, cardHover } =
+    getServiceStyles(variant);
 
   const services: ServiceItem[] = [
     {
@@ -53,7 +52,7 @@ export const Services = ({ variant = "stellar" }: ServicesProps) => {
       images: [
         "https://images.unsplash.com/photo-1555066931-e57f86aa08a3?auto=format&fit=crop&w=1200&q=80",
         "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1200&q=80",
-        "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1200&q=80",
+        "https://images.unsplash.com/photo-1556767576-cfba5f8e7d16?auto=format&fit=crop&w=1200&q=80",
       ],
     },
   ];
@@ -69,22 +68,22 @@ export const Services = ({ variant = "stellar" }: ServicesProps) => {
   }, [currentService, services]);
 
   const blobs = [
-    { size: 200, top: "10%", left: "15%", color: accent },
-    { size: 160, top: "65%", left: "60%", color: accent },
-    { size: 120, top: "30%", left: "75%", color: accent },
+    { size: 220, top: "8%", left: "12%", color: accent },
+    { size: 180, top: "60%", left: "65%", color: accent },
+    { size: 140, top: "30%", left: "78%", color: accent },
   ];
 
   return (
     <motion.section
       className={cn(
-        "relative overflow-hidden min-h-screen flex flex-col items-center justify-center py-24 px-6",
+        "relative flex flex-col items-center justify-center overflow-hidden",
         servicesVariants({ variant })
       )}
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.9, ease: "easeOut" }}
     >
-      {/* Background blobs */}
+      {/* Floating Blobs */}
       <div className="absolute inset-0 overflow-hidden">
         {blobs.map((b, i) => (
           <motion.div
@@ -111,7 +110,7 @@ export const Services = ({ variant = "stellar" }: ServicesProps) => {
         ))}
       </div>
 
-      {/* Heading */}
+      {/* Section Heading */}
       <motion.h2
         className="text-4xl md:text-5xl font-bold mb-12 text-center relative z-10"
         initial={{ y: 30, opacity: 0 }}
@@ -129,7 +128,7 @@ export const Services = ({ variant = "stellar" }: ServicesProps) => {
         />
       </motion.h2>
 
-      {/* Services Cards */}
+      {/* Service Cards */}
       <div className="relative z-10 grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl w-full">
         {services.map((service, idx) => {
           const Icon = service.icon;
@@ -139,47 +138,43 @@ export const Services = ({ variant = "stellar" }: ServicesProps) => {
             <motion.div
               key={idx}
               className={cn(
-                "relative p-8 rounded-2xl shadow-xl border backdrop-blur-lg cursor-pointer transition-all duration-500 hover:scale-[1.03]",
+                "relative p-8 rounded-2xl shadow-lg border backdrop-blur-md cursor-pointer transition-all duration-500",
                 active
-                  ? "border-opacity-60"
-                  : "border-opacity-20 opacity-80 hover:opacity-100"
+                  ? "scale-[1.03] border-opacity-70"
+                  : "opacity-85 hover:opacity-100"
               )}
               style={{
-                borderColor: accent,
-                background:
-                  variant === "minimalist"
-                    ? theme.colors.secondary
-                    : `${theme.colors.secondary}DD`,
+                borderColor: border,
+                borderRadius: radius,
+                boxShadow: shadow,
+                background: `${secondary}DD`,
               }}
               onClick={() => setCurrentService(idx)}
               whileHover={{
-                y: -6,
-                boxShadow: `0 8px 25px ${accent}33`,
+                y: -8,
+                boxShadow: `0 8px 25px ${cardHover}`,
               }}
             >
-              <motion.div
-                className="flex flex-col items-center text-center space-y-4"
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, ease: "easeOut" }}
-              >
+              <div className="flex flex-col items-center text-center space-y-4">
                 <Icon
-                  size={36}
+                  size={38}
                   style={{
                     color: accent,
                     filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.15))",
                   }}
                 />
-                <h3 className="text-xl font-semibold">{service.title}</h3>
-                <p className="opacity-75 text-sm">{service.description}</p>
-              </motion.div>
+                <h3 className="text-lg font-semibold">{service.title}</h3>
+                <p className="opacity-75 text-sm leading-relaxed max-w-xs">
+                  {service.description}
+                </p>
+              </div>
             </motion.div>
           );
         })}
       </div>
 
-      {/* Image slideshow */}
-      <div className="relative z-10 mt-16 w-full max-w-5xl h-[420px] overflow-hidden rounded-2xl shadow-2xl border border-white/10">
+      {/* Image Slideshow */}
+      <div className="relative z-10 mt-16 w-full max-w-5xl h-[400px] overflow-hidden rounded-2xl shadow-2xl border border-white/10">
         <AnimatePresence mode="wait">
           <motion.img
             key={services[currentService].images[index]}
@@ -190,14 +185,10 @@ export const Services = ({ variant = "stellar" }: ServicesProps) => {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.9, ease: "easeInOut" }}
-            onError={(e) =>
-              ((e.target as HTMLImageElement).src =
-                "https://images.unsplash.com/photo-1556767576-cfba5f8e7d16?auto=format&fit=crop&w=1200&q=80")
-            }
           />
         </AnimatePresence>
 
-        {/* Overlay shimmer */}
+        {/* Shimmer Overlay */}
         <motion.div
           className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
           animate={{ x: ["-100%", "100%"] }}
