@@ -1,98 +1,72 @@
 import "./App.css";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { NavBar } from "./components/Navbar";
+import { Hero } from "./components/Hero";
+import { Testimonials } from "./components/Testimonials";
+import { UseCases } from "./components/UseCases";
+import { About } from "./components/About";
+import { CTA } from "./components/CallToAction";
+import { Footer } from "./components/Footer";
+import { ProductGallery } from "./components/ProductGallery";
 import { motion } from "framer-motion";
 
-import { Navbar } from "./components/Navbar";
-import { Footer } from "./components/Footer";
-
-import { Home } from "./pages/Home";
-import { About } from "./pages/About";
-import { CallToAction } from "./pages/CallToAction";
-import { Contact } from "./pages/Contact";
-import { Register } from "./pages/Register";
-import { Login } from "./pages/Login";
-
-import { fadeUp, staggerChildren } from "./utils/animations.cva";
-import { Services } from "./pages/Services";
-
 function App() {
+  // Simple fade-up variant for sections
 
 
   return (
-    <div className="min-h-screen">
-      <Router>
-        {/* Navbar */}
-          <Navbar variant="bloom" />
+    <>
+      <header data-testid="navbar">
+        <NavBar variant="glacia" />
+      </header>
 
-        {/* Routes */}
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <motion.div
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true }}
-                variants={staggerChildren(0.15)}
-              >
-                <motion.div variants={fadeUp} whileHover={{ scale: 1.01 }}>
-                  <Home variant="bloom" />
-                </motion.div>
-                <motion.div variants={fadeUp} whileHover={{ scale: 1.01 }}>
-                  <CallToAction variant="bloom" />
-                </motion.div>
-              </motion.div>
-            }
-          />
-          <Route
-            path="/about"
-            element={
-              <motion.div variants={fadeUp} initial="hidden" whileInView="visible">
-                <About variant="bloom" />
-              </motion.div>
-            }
-          />
-          <Route
-            path="/contact"
-            element={
-              <motion.div variants={fadeUp} initial="hidden" whileInView="visible">
-                <Contact variant="bloom" />
-              </motion.div>
-            }
-          />
-          <Route
-            path="/register"
-            element={
-              <motion.div variants={fadeUp} initial="hidden" whileInView="visible">
-                <Register variant="bloom" />
-              </motion.div>
-            }
-          />
-          <Route
-            path="/login"
-            element={
-              <motion.div variants={fadeUp} initial="hidden" whileInView="visible">
-                <Login variant="bloom" />
-              </motion.div>
-            }
-          />
+      <motion.main initial="hidden" animate="visible" className="overflow-x-hidden">
 
-            <Route
-            path="/services"
-            element={
-              <motion.div variants={fadeUp} initial="hidden" whileInView="visible">
-                <Services variant="bloom" />
-              </motion.div>
-            }
-          />
-        </Routes>    
+        <motion.section
+          data-testid="hero-section"
+        >
+          <Hero variant="glacia" />
+        </motion.section>
 
-        {/* Footer */}
-        <motion.div variants={fadeUp} initial="hidden" whileInView="visible">
-          <Footer variant="bloom" />
-        </motion.div>
-      </Router>
-    </div>
+        <motion.section
+          data-testid="product-gallery-section"
+          className="mt-16"
+        >
+          <ProductGallery variant="glacia" />
+        </motion.section>
+
+        <motion.section
+          data-testid="testimonials-section"
+          className="mt-16"
+        >
+          <Testimonials variant="glacia" autoScroll scrollInterval={5000} />
+        </motion.section>
+
+        <motion.section
+          data-testid="usecases-section"
+          className="mt-16"
+        >
+          <UseCases variant="glacia" />
+        </motion.section>
+
+        <motion.section
+          data-testid="about-section"
+          className="mt-16"
+        >
+          <About variant="glacia" />
+        </motion.section>
+
+        <motion.section
+          data-testid="cta-section"
+          className="mt-16"
+        >
+          <CTA variant="glacia" />
+        </motion.section>
+      </motion.main>
+
+      <footer data-testid="footer-section" className="mt-16">
+        <Footer variant="glacia" />
+      </footer>
+    </>
   );
 }
 

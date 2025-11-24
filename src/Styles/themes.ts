@@ -1,137 +1,164 @@
+export type ColorKey =
+  | "background"
+  | "foreground"
+  | "primary"
+  | "primaryHover"
+  | "secondary"
+  | "accent"
+  | "border"
+  | "card"
+  | "muted";
+
+export type FontSizeKey = "xs" | "sm" | "md" | "lg" | "xl";
+export type RadiusKey = "sm" | "md" | "lg";
+export type ShadowKey = "sm" | "md" | "lg";
+export type SpacingKey = "xs" | "sm" | "md" | "lg" | "xl";
+
 export interface Theme {
   name: string;
-  colors: {
-    [x: string]: any;
-    card: string;
-    muted: string;
-    background: string;
-    foreground: string;
-    primary: string;
-    primaryHover: string;
-    secondary: string;
-    accent: string;
-    border: string;
-  };
+  colors: Record<ColorKey, string>;
   fontFamily: string;
-  fontSizes: {
-    sm: string;
-    md: string;
-    lg: string;
-    xl: string;
-  };
-  radii: {
-    sm: string;
-    md: string;
-    lg: string;
-  };
-  shadows: {
-    sm: string;
-    md: string;
-    lg: string;
-  };
+  fontSizes: Record<FontSizeKey, string>;
+  radii: Record<RadiusKey, string>;
+  shadows: Record<ShadowKey, string>;
+  spacing: Record<SpacingKey, string>;
 }
 
-/* === 🌌 STELLAR THEME (Futuristic & Sleek) === */
-export const stellarTheme: Theme = {
-  name: "stellar",
+const baseFontSizes = {
+  xs: "0.75rem",
+  sm: "0.875rem",
+  md: "1rem",
+  lg: "1.125rem",
+  xl: "1.5rem",
+};
+
+const baseRadii = {
+  sm: "4px",
+  md: "8px",
+  lg: "12px",
+};
+
+const baseShadows = {
+  sm: "0 1px 3px rgba(0,0,0,0.1)",
+  md: "0 3px 6px rgba(0,0,0,0.15)",
+  lg: "0 6px 12px rgba(0,0,0,0.2)",
+};
+
+const baseSpacing = {
+  xs: "0.25rem",
+  sm: "0.5rem",
+  md: "1rem",
+  lg: "1.5rem",
+  xl: "2rem",
+};
+
+export const helioTheme: Theme = {
+  name: "helio",
   colors: {
-    background: "#0B0C10", // Deep cosmic blue-black
-    foreground: "#F2FBFB", // Softer white for clarity
-    primary: "#45A29E",
-    primaryHover: "#66FCF1",
-    secondary: "#1F2833",
-    accent: "#5DADE2",
-    border: "#66FCF1",
-    card: "rgba(15, 20, 25, 0.65)", // Glass effect
-    muted: "rgba(255, 255, 255, 0.7)", // Readable muted text
+    background: "#FFF4D6",
+    foreground: "#2F2A1F",
+    primary: "#FFB400",
+    primaryHover: "#FFD27A",
+    secondary: "#FFE7B8",
+    accent: "#FF8A00",
+    border: "#EEC777",
+    card: "rgba(255, 255, 240, 0.85)",
+    muted: "rgba(47, 42, 31, 0.6)",
+  },
+  fontFamily: "'Nunito', sans-serif",
+  fontSizes: baseFontSizes,
+  radii: baseRadii,
+  shadows: baseShadows,
+  spacing: baseSpacing,
+};
+
+export const equinoxTheme: Theme = {
+  name: "equinox",
+  colors: {
+    background: "#F7EDE2",
+    foreground: "#3E2F25",
+    primary: "#C26D3F",
+    primaryHover: "#D88A63",
+    secondary: "#EBD3C3",
+    accent: "#A44F2A",
+    border: "#D0B5A4",
+    card: "rgba(255, 250, 245, 0.9)",
+    muted: "rgba(62, 47, 37, 0.6)",
+  },
+  fontFamily: "'Merriweather', serif",
+  fontSizes: baseFontSizes,
+  radii: baseRadii,
+  shadows: baseShadows,
+  spacing: baseSpacing,
+};
+
+export const glaciaTheme: Theme = {
+  name: "glacia",
+  colors: {
+    background: "#E9F4FF",
+    foreground: "#1E2A35",
+    primary: "#4DA3FF",
+    primaryHover: "#76B9FF",
+    secondary: "#D4E6F7",
+    accent: "#94CCFF",
+    border: "#A8CDED",
+    card: "rgba(245, 250, 255, 0.9)",
+    muted: "rgba(30, 42, 53, 0.6)",
   },
   fontFamily: "'Inter', sans-serif",
-  fontSizes: {
-    sm: "0.875rem",
-    md: "1rem",
-    lg: "1.125rem",
-    xl: "1.5rem",
-  },
-  radii: {
-    sm: "4px",
-    md: "8px",
-    lg: "12px",
-  },
-  shadows: {
-    sm: "0 2px 6px rgba(102, 252, 241, 0.1)",
-    md: "0 4px 12px rgba(102, 252, 241, 0.2)",
-    lg: "0 8px 24px rgba(102, 252, 241, 0.3)",
-  },
+  fontSizes: baseFontSizes,
+  radii: baseRadii,
+  shadows: baseShadows,
+  spacing: baseSpacing,
 };
 
-/* === 🌸 BLOOM THEME (Soft & Playful) === */
-export const bloomTheme: Theme = {
-  name: "bloom",
+export const floraTheme: Theme = {
+  name: "flora",
   colors: {
-    background: "#FFF8FA", // Warm blush pink
-    foreground: "#42222A", // Deep rose-brown for contrast
-    primary: "#FF5CA8", // Vivid pink
-    primaryHover: "#FF7BB8", // Gentle hover shade
-    secondary: "#FFE5F0", // Pastel soft pink
-    accent: "#F28CA8", // Balanced coral
-    border: "#F7A8C8", // Soft border pink
-    card: "rgba(255, 255, 255, 0.8)", // Light glass background
-    muted: "rgba(80, 40, 50, 0.7)", // Softer readable muted text
+    background: "#F3FFF6",
+    foreground: "#213328",
+    primary: "#4CAF50",
+    primaryHover: "#7EDC82",
+    secondary: "#D9F5DE",
+    accent: "#8BE29B",
+    border: "#BEEAC8",
+    card: "rgba(240, 255, 245, 0.9)",
+    muted: "rgba(33, 51, 40, 0.6)",
   },
-  fontFamily: "'Poppins', sans-serif",
-  fontSizes: {
-    sm: "0.9rem",
-    md: "1rem",
-    lg: "1.25rem",
-    xl: "1.75rem",
-  },
-  radii: {
-    sm: "6px",
-    md: "10px",
-    lg: "16px",
-  },
-  shadows: {
-    sm: "0 2px 4px rgba(255, 92, 168, 0.15)",
-    md: "0 4px 8px rgba(255, 92, 168, 0.2)",
-    lg: "0 8px 16px rgba(255, 92, 168, 0.25)",
-  },
+  fontFamily: "'Quicksand', sans-serif",
+  fontSizes: baseFontSizes,
+  radii: baseRadii,
+  shadows: baseShadows,
+  spacing: baseSpacing,
 };
 
-/* === ⚪ MINIMALIST THEME (Neutral & Balanced) === */
-export const minimalistTheme: Theme = {
-  name: "minimalist",
+export const monoTheme: Theme = {
+  name: "mono",
   colors: {
-    background: "#F9FAFB", // Slightly warm white
-    foreground: "#1A1A1A", // Deep neutral black for text
+    background: "#FAFAFA",
+    foreground: "#1A1A1A",
     primary: "#2D2D2D",
-    primaryHover: "#3F3F3F",
-    secondary: "#E5E7EB", // Subtle gray for cards
-    accent: "#9CA3AF", // Medium gray accent
-    border: "#D1D5DB", // Softer border gray
-    card: "rgba(255, 255, 255, 0.85)", // Light frosted card
-    muted: "rgba(26, 26, 26, 0.6)", // Medium contrast muted text
+    primaryHover: "#3A3A3A",
+    secondary: "#E5E5E5",
+    accent: "#9A9A9A",
+    border: "#D1D1D1",
+    card: "rgba(255, 255, 255, 0.9)",
+    muted: "rgba(26, 26, 26, 0.6)",
   },
   fontFamily: "'Roboto', sans-serif",
-  fontSizes: {
-    sm: "0.875rem",
-    md: "1rem",
-    lg: "1.125rem",
-    xl: "1.5rem",
-  },
-  radii: {
-    sm: "2px",
-    md: "6px",
-    lg: "10px",
-  },
-  shadows: {
-    sm: "0 1px 3px rgba(0, 0, 0, 0.06)",
-    md: "0 2px 5px rgba(0, 0, 0, 0.08)",
-    lg: "0 4px 10px rgba(0, 0, 0, 0.12)",
-  },
+  fontSizes: baseFontSizes,
+  radii: baseRadii,
+  shadows: baseShadows,
+  spacing: baseSpacing,
 };
 
 export const themes = {
-  stellar: stellarTheme,
-  bloom: bloomTheme,
-  minimalist: minimalistTheme,
+  helio: helioTheme,
+  equinox: equinoxTheme,
+  glacia: glaciaTheme,
+  flora: floraTheme,
+  mono: monoTheme,
 };
+
+export type ThemeName = keyof typeof themes;
+export const themeList: ThemeName[] = Object.keys(themes) as ThemeName[];

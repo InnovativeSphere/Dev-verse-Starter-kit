@@ -1,147 +1,163 @@
-import { type FC, useRef } from "react";
-import {
-  motion,
-  useMotionValue,
-  useTransform,
-  useScroll,
-  useSpring,
-  type Easing,
-} from "framer-motion";
+"use client";
+
+import { type FC } from "react";
 import { cn } from "../utils/cn";
 import { heroVariants } from "../utils/hero.cva";
-import { Button } from "./Button";
+import { themes, type ThemeName } from "../Styles/themes";
+import { Button } from "../Shared-Components/Button";
+import { GalleryHeader } from "../Shared-Components/Heading";
+import { motion } from "framer-motion";
 
 interface HeroProps {
-  variant?: "stellar" | "bloom" | "minimalist";
+  variant?: ThemeName;
 }
 
-export const Hero: FC<HeroProps> = ({ variant = "stellar" }) => {
-  const ref = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
+export const Hero: FC<HeroProps> = ({ variant = "helio" }) => {
+  const theme = themes[variant];
 
-  // Scroll-based transforms
-  const yScroll = useTransform(scrollYProgress, [0, 1], [0, 150]);
-  const opacityScroll = useTransform(scrollYProgress, [0, 0.6], [1, 0.5]);
-  const textDepth = useTransform(scrollYProgress, [0, 0.6], [0, -80]);
-  const textFade = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
-
-  // Cursor-based parallax
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const smoothX = useSpring(x, { stiffness: 40, damping: 20 });
-  const smoothY = useSpring(y, { stiffness: 40, damping: 20 });
-  const rotate = useTransform(smoothX, [-100, 100], [-4, 4]);
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    const { innerWidth, innerHeight } = window;
-    x.set((e.clientX - innerWidth / 2) / 25);
-    y.set((e.clientY - innerHeight / 2) / 25);
-  };
-
-  const easeInOut: Easing = [0.65, 0, 0.35, 1];
+  // Particle/float effect for subtle background movement
+  const particles = Array.from({ length: 8 });
 
   return (
     <section
-      ref={ref}
-      onMouseMove={handleMouseMove}
-      data-theme={variant}
+      id="hero"
+      data-testid="hero-section"
       className={cn(
         heroVariants({ variant }),
-        "relative h-screen w-full flex flex-col items-center justify-center overflow-hidden"
+        "mt-14 py-24 md:py-28 overflow-visible relative"
       )}
+      style={{
+        backgroundColor: theme.colors.background,
+        color: theme.colors.foreground,
+        fontFamily: theme.fontFamily,
+      }}
     >
-      {/* Background Gradient from Theme */}
-      <motion.div
-        className="absolute inset-0 bg-gradient-to-br from-[var(--bg)] via-[var(--primary)] to-[var(--accent)]"
-        style={{ opacity: opacityScroll, y: yScroll }}
+      {/* Layered radial glows */}
+      <div
+        className="absolute inset-0 -z-20 pointer-events-none"
+        style={{
+          background: `
+            radial-gradient(circle at 20% 30%, ${theme.colors.accent}1a, transparent 40%),
+            radial-gradient(circle at 80% 60%, ${theme.colors.accent}10, transparent 50%)
+          `,
+          filter: "blur(120px)",
+        }}
       />
 
-      {/* Floating Blobs */}
-      {[...Array(3)].map((_, i) => (
+      {/* Subtle floating particles */}
+      {particles.map((_, i) => (
         <motion.div
           key={i}
-          className="absolute rounded-full blur-3xl mix-blend-screen opacity-40"
+          className="absolute w-2 h-2 rounded-full bg-white/20"
           style={{
-            width: 240 + i * 150,
-            height: 240 + i * 150,
-            background: `radial-gradient(circle, var(--accent), transparent 70%)`,
-            top: i === 0 ? "-10%" : i === 2 ? "auto" : "20%",
-            bottom: i === 2 ? "-10%" : "auto",
-            left: i % 2 === 0 ? "-10%" : "auto",
-            right: i % 2 !== 0 ? "-10%" : "auto",
-            zIndex: 1,
+            top: `${Math.random() * 100}%`,
+            left: `${Math.random() * 100}%`,
+            pointerEvents: "none",
           }}
-          animate={{
-            y: [0, i % 2 === 0 ? 40 : -40, 0],
-            x: [0, i % 2 === 0 ? -20 : 20, 0],
-            scale: [1, 1.05, 1],
-            rotate: [0, 10, 0],
-          }}
+          animate={{ y: ["0%", "10%", "0%"], opacity: [0.3, 0.6, 0.3] }}
           transition={{
-            duration: 18 + i * 5,
+            duration: 6 + Math.random() * 4,
             repeat: Infinity,
-            ease: easeInOut,
+            ease: "easeInOut",
+            delay: Math.random() * 2,
           }}
         />
       ))}
 
-      {/* Hero Content */}
-      <motion.div
-        style={{ x: smoothX, y: smoothY, rotate, opacity: textFade, translateY: textDepth }}
-        className="relative z-20 text-center px-6 py-12 max-w-3xl"
-      >
+      <div className="relative z-10 flex flex-col items-center text-center px-6">
+        {/* Title */}
         <motion.h1
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.1, ease: easeInOut }}
-          className={cn(
-            "text-5xl md:text-6xl font-extrabold leading-tight tracking-tight mb-6 text-[var(--text)]"
-          )}
-        >
-          Design the{" "}
-          <span className="text-[var(--accent)]">Future</span> You Imagine
-        </motion.h1>
-
-        <motion.p
+          data-testid="hero-title"
+          className="text-4xl md:text-6xl font-semibold mb-4 max-w-2xl"
+          style={{ color: theme.colors.foreground }}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3, duration: 1 }}
-          className={cn(
-            "max-w-xl mx-auto mb-10 text-base md:text-lg opacity-90 text-[var(--text)]"
-          )}
+          transition={{ duration: 0.7, ease: "easeOut" }}
         >
-          A seamless blend of creativity and engineering. Smooth motion. Elegant visuals.  
-          Experience a new dimension of digital craftsmanship.
+          Build the{" "}
+          <span
+            style={{
+              color: theme.colors.accent,
+              textShadow: "0 0 12px rgba(255,255,255,0.15)",
+            }}
+          >
+            Future of Design
+          </span>
+        </motion.h1>
+
+        {/* Subtitle */}
+        <motion.p
+          data-testid="hero-subtitle"
+          className="text-lg md:text-xl mb-10 max-w-xl opacity-80 leading-relaxed"
+          style={{ color: theme.colors.foreground }}
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.85, ease: "easeOut", delay: 0.1 }}
+        >
+          A refined library of components designed with balance, clarity, and
+          precision — giving your next UI a premium edge.
         </motion.p>
 
+        {/* CTA */}
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.6, duration: 1 }}
-          className="flex flex-col sm:flex-row justify-center gap-4"
+          initial={{ opacity: 0, y: 26 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.9, ease: "easeOut", delay: 0.2 }}
         >
           <Button
             variant={variant}
             size="lg"
-            className="font-medium px-8 py-3 rounded-full hover:scale-105 transition-transform"
+            className="px-12 py-4 text-lg mb-14 transition-transform hover:scale-[1.04]  hover:shadow-accent/40"
+            onClick={() => (window.location.href = "https://paystack.com")}
           >
-            Get Started
-          </Button>
-          <Button
-            variant={variant}
-            size="lg"
-            className="font-medium px-8 py-3 rounded-full border border-[var(--accent)] hover:bg-[var(--accent)]/10 transition-all"
-          >
-            Explore Themes
+            Explore Now
           </Button>
         </motion.div>
-      </motion.div>
 
-      {/* Overlay Glow */}
-      <motion.div
-        className="absolute inset-0 bg-gradient-to-b from-transparent to-[var(--bg)]/10 z-10"
-        style={{ opacity: opacityScroll }}
-      />
+        {/* Hero Image */}
+        <motion.div
+          className="w-full flex justify-center"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, ease: "easeOut", delay: 0.25 }}
+        >
+          <motion.div
+            className="w-[74%] md:w-[54%] lg:w-[44%] relative"
+            style={{ perspective: 1200 }}
+            whileHover={
+              window.innerWidth > 768
+                ? { scale: 1.03, rotateX: 4, rotateY: -4 }
+                : {}
+            }
+            transition={{ type: "spring", stiffness: 120, damping: 16 }}
+          >
+            <img
+              data-testid="hero-image"
+              src="https://images.unsplash.com/photo-1588361861040-ac9b1018f6d5?w=600&auto=format&fit=crop&q=60"
+              alt="Hero Image"
+              className="w-full rounded-2xl object-cover shadow-2xl transition-transform duration-300 ease-out"
+              style={{ height: "380px" }}
+            />
+            {/* Subtle reflection/shine overlay */}
+            <div className="absolute inset-0 pointer-events-none rounded-2xl bg-gradient-to-tr from-white/10 to-transparent" />
+          </motion.div>
+        </motion.div>
+
+        {/* Section Header under hero */}
+        <motion.div
+          initial={{ opacity: 0, y: 28 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.2, ease: "easeOut", delay: 0.3 }}
+          className="mt-16"
+        >
+          <GalleryHeader
+            title="My Visual Diary"
+            subtitle="See the world through quiet, composed visuals — swipe or use controls to explore."
+            variantText="quiet, composed visuals"
+            variant={"mono"}
+          />
+        </motion.div>
+      </div>
     </section>
   );
 };

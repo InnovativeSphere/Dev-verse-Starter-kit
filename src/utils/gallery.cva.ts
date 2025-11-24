@@ -1,10 +1,10 @@
 import { cva } from "class-variance-authority";
 
-export const heroVariants = cva(
-  "relative flex flex-col items-center justify-center text-center overflow-hidden py-20 px-6 transition-colors duration-500",
+export const galleryVariants = cva(
+  "relative w-full transition-colors duration-700",
   {
     variants: {
-       variant: {
+      variant: {
         helio: "",
         equinox: "",
         glacia: "",

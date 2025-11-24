@@ -1,29 +1,66 @@
 import { cva } from "class-variance-authority";
 
-export const footerVariants = cva(
-  "relative w-full px-6 py-16 sm:py-20 overflow-hidden transition-colors duration-300 backdrop-blur-lg flex flex-col items-center justify-center border-t",
-  {
+export const footerVariants = {
+  container: cva(
+    "relative w-full py-12 px-6 md:px-12 transition-colors duration-700 flex flex-col items-center justify-center",
+    {
+      variants: {
+        variant: {
+          helio: "",
+          equinox: "",
+          glacia: "",
+          flora: "",
+          mono: "",
+        },
+      },
+      defaultVariants: {
+        variant: "helio",
+      },
+    }
+  ),
+
+  brand: cva("text-xl md:text-2xl font-bold mb-2", {
     variants: {
       variant: {
-        stellar: `
-          bg-[var(--stellar-bg)]
-          text-[var(--stellar-foreground)]
-          border-[var(--stellar-border)]
-        `,
-        bloom: `
-          bg-[var(--bloom-bg)]
-          text-[var(--bloom-foreground)]
-          border-[var(--bloom-border)]
-        `,
-        minimalist: `
-          bg-[var(--minimalist-bg)]
-          text-[var(--minimalist-foreground)]
-          border-[var(--minimalist-border)]
-        `,
+        helio: "",
+        equinox: "",
+        glacia: "",
+        flora: "",
+        mono: "",
       },
     },
     defaultVariants: {
-      variant: "stellar",
+      variant: "helio",
     },
-  }
-);
+  }),
+
+  copyright: cva("text-sm opacity-80 mb-4", {
+    variants: {
+      variant: {
+        helio: "",
+        equinox: "",
+        glacia: "",
+        flora: "",
+        mono: "",
+      },
+    },
+    defaultVariants: {
+      variant: "helio",
+    },
+  }),
+
+  socials: cva("flex gap-4 mt-2", {
+    variants: {
+      variant: {
+        helio: "",
+        equinox: "",
+        glacia: "",
+        flora: "",
+        mono: "",
+      },
+    },
+    defaultVariants: {
+      variant: "helio",
+    },
+  }),
+};

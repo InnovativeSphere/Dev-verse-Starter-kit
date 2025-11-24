@@ -1,18 +1,19 @@
 import { cva } from "class-variance-authority";
-import { themes } from "../Styles/themes";
 
 export const homeContainer = cva(
   "relative flex flex-col items-center justify-center overflow-hidden min-h-screen transition-colors duration-500 font-sans",
   {
     variants: {
       variant: {
-        stellar: `bg-[${themes.stellar.colors.background}] text-[${themes.stellar.colors.foreground}]`,
-        bloom: `bg-[${themes.bloom.colors.background}] text-[${themes.bloom.colors.foreground}]`,
-        minimalist: `bg-[${themes.minimalist.colors.background}] text-[${themes.minimalist.colors.foreground}]`,
+        helio: "",
+        equinox: "",
+        glacia: "",
+        flora: "",
+        mono: "",
       },
     },
     defaultVariants: {
-      variant: "stellar",
+      variant: "helio",
     },
   }
 );
@@ -43,22 +44,15 @@ export const showcase = cva(
   {
     variants: {
       variant: {
-        stellar: [
-          "bg-[#1F2833]/40 border border-[#45A29E]/30 hover:ring-2 hover:ring-[#66FCF1]/60",
-          `text-[${themes.stellar.colors.foreground}]`,
-        ].join(" "),
-        bloom: [
-          "bg-[#FFD1DC]/60 border border-[#FF6FB5]/40 hover:ring-2 hover:ring-[#FF89C0]/60",
-          `text-[${themes.bloom.colors.foreground}]`,
-        ].join(" "),
-        minimalist: [
-          "bg-white border border-gray-300 hover:ring-2 hover:ring-gray-500/50",
-          `text-[${themes.minimalist.colors.foreground}]`,
-        ].join(" "),
+        helio: "",
+        equinox: "",
+        glacia: "",
+        flora: "",
+        mono: "",
       },
     },
     defaultVariants: {
-      variant: "stellar",
+      variant: "helio",
     },
   }
 );
@@ -68,22 +62,15 @@ export const testimonialCard = cva(
   {
     variants: {
       variant: {
-        stellar: [
-          "bg-[#1F2833]/50 border border-[#45A29E]/30 hover:ring-2 hover:ring-[#66FCF1]/50",
-          `text-[${themes.stellar.colors.foreground}]`,
-        ].join(" "),
-        bloom: [
-          "bg-[#FFF0F5]/80 border border-[#FF6FB5]/40 hover:ring-2 hover:ring-[#FF89C0]/50",
-          `text-[${themes.bloom.colors.foreground}]`,
-        ].join(" "),
-        minimalist: [
-          "bg-white/80 border border-gray-300 hover:ring-2 hover:ring-gray-500/40",
-          `text-[${themes.minimalist.colors.foreground}]`,
-        ].join(" "),
+        helio: "",
+        equinox: "",
+        glacia: "",
+        flora: "",
+        mono: "",
       },
     },
     defaultVariants: {
-      variant: "stellar",
+      variant: "helio",
     },
   }
 );
